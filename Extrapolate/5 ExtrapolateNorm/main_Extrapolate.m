@@ -1,0 +1,72 @@
+%% Seed
+% rng(31);
+
+%% predicted data
+predictedX = linspace(-2, 1, 400);
+
+%% training data
+% observedX = [0.3745, 0.9507, 0.7320, 0.32, 0.6703];
+% observedX = -2 * rand(1, 5) + 1;
+observedX = rand(1, 5);
+observedY = Obj1D(observedX);
+
+
+[A, B, minDist] = minDistance(observedX);
+disp(A);
+disp(B);
+disp(minDist);
+
+
+%% Other parameter
+thetaSet = [0.01, 0.5, 1, 3];
+
+t = tiledlayout(4, 4);
+sgtitle('GP with different Kernel Functions, (4 diff theta), (6 points)');
+sgt.FontSize = 15;
+
+y_min = min(observedY);
+
+for i = 1:4
+    for j = 1:4
+        theta = thetaSet(j);
+    
+        ax = nexttile;
+        
+        [predictedY, sigma, type] = GP(predictedX, observedX, observedY, theta, i, y_min);
+
+        
+        % predictedY = predictedY - abs(y_min);
+
+        hold on;
+        % predicted fucntion
+        for iplot = 1:length(predictedX)-1
+            if predictedY(iplot) < y_min
+                plot(ax, predictedX(iplot:iplot+1), predictedY(iplot:iplot+1), "k", 'LineWidth', 3, 'Color', 'blue');
+            end
+        end
+
+        for iplot = 1:length(predictedX)-1
+            if predictedY(iplot) >= y_min
+                plot(ax, predictedX(iplot:iplot+1), predictedY(iplot:iplot+1), "k", 'LineWidth', 3, 'Color', 'red');
+            end
+        end
+     
+
+        % objective function
+        plot(ax, predictedX, Obj1D(predictedX), "k", 'LineWidth', 0.5, 'Color', 'g');  
+        % training data
+        scatter(ax, observedX, observedY, 'filled', 'black');
+        
+        title(ax, type);
+        ylabel(ax, theta);
+        % legend('Obj function', 'GP mean');
+        hold off;
+    end
+end
+% disp(observedX);
+
+
+
+
+
+

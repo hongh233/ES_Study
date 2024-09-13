@@ -1,0 +1,418 @@
+seed = 101;
+
+
+t = tiledlayout(3, 5);
+
+% <------------------- linear kernel ----------------------------->
+ax = nexttile(1);
+rng(seed);
+precision = 120;    % now it fixed, do not modify!
+numOfTrainingPoints = 10;
+preTempX1 = linspace(-1, 2, precision);
+preTempX2 = linspace(-1, 2, precision);
+[px1, px2] = meshgrid(preTempX1, preTempX2);
+predictedX1 = reshape(px1, 1, []);       % 1 * 1600
+predictedX2 = reshape(px2, 1, []);       % 1 * 1600
+predictedX = [predictedX1; predictedX2]; % 2 * 1600
+observedX1 = rand(1, numOfTrainingPoints);  % range: (0,1)
+observedX2 = rand(1, numOfTrainingPoints);  % range: (0,1)
+observedX = [observedX1; observedX2];
+observedY = Obj2D(observedX1, observedX2);
+[predictedY, sigma, type] = GP(predictedX, observedX, observedY, 0.5, 5);
+Y = reshape(predictedY, precision, precision);
+% obj function
+% mesh(px1,px2,Obj2D(px1,px2), 'EdgeColor', 'flat', 'FaceAlpha', 0);
+hold on;
+surf(px1, px2, Y);
+sortedObservedY = sort(observedY);
+y_threshold = sortedObservedY(2);
+surf(ax, px1, px2, Y.*(Y<=y_threshold & Y>=min(observedY)), 'FaceColor', 'red', 'EdgeColor', 'black');
+scatter3(ax, observedX1, observedX2, observedY, 'black', 'filled', 'o');
+title(ax, 'linear kernel theta: 0.5');
+hold off;
+
+ax = nexttile(6);
+rng(seed);
+precision = 120;    % now it fixed, do not modify!
+numOfTrainingPoints = 10;
+preTempX1 = linspace(-1, 2, precision);
+preTempX2 = linspace(-1, 2, precision);
+[px1, px2] = meshgrid(preTempX1, preTempX2);
+predictedX1 = reshape(px1, 1, []);       % 1 * 1600
+predictedX2 = reshape(px2, 1, []);       % 1 * 1600
+predictedX = [predictedX1; predictedX2]; % 2 * 1600
+observedX1 = rand(1, numOfTrainingPoints);  % range: (0,1)
+observedX2 = rand(1, numOfTrainingPoints);  % range: (0,1)
+observedX = [observedX1; observedX2];
+observedY = Obj2D(observedX1, observedX2);
+[predictedY, sigma, type] = GP(predictedX, observedX, observedY, 1, 5);
+Y = reshape(predictedY, precision, precision);
+% obj function
+% mesh(px1,px2,Obj2D(px1,px2), 'EdgeColor', 'flat', 'FaceAlpha', 0);
+hold on;
+surf(px1, px2, Y);
+sortedObservedY = sort(observedY);
+y_threshold = sortedObservedY(2);
+surf(ax, px1, px2, Y.*(Y<=y_threshold & Y>=min(observedY)), 'FaceColor', 'red', 'EdgeColor', 'black');
+scatter3(ax, observedX1, observedX2, observedY, 'black', 'filled', 'o');
+title(ax, 'linear kernel theta: 1');
+hold off;
+
+
+ax = nexttile(11);
+rng(seed);
+precision = 120;    % now it fixed, do not modify!
+numOfTrainingPoints = 10;
+preTempX1 = linspace(-1, 2, precision);
+preTempX2 = linspace(-1, 2, precision);
+[px1, px2] = meshgrid(preTempX1, preTempX2);
+predictedX1 = reshape(px1, 1, []);       % 1 * 1600
+predictedX2 = reshape(px2, 1, []);       % 1 * 1600
+predictedX = [predictedX1; predictedX2]; % 2 * 1600
+observedX1 = rand(1, numOfTrainingPoints);  % range: (0,1)
+observedX2 = rand(1, numOfTrainingPoints);  % range: (0,1)
+observedX = [observedX1; observedX2];
+observedY = Obj2D(observedX1, observedX2);
+[predictedY, sigma, type] = GP(predictedX, observedX, observedY, 3, 5);
+Y = reshape(predictedY, precision, precision);
+% obj function
+% mesh(px1,px2,Obj2D(px1,px2), 'EdgeColor', 'flat', 'FaceAlpha', 0);
+hold on;
+surf(px1, px2, Y);
+sortedObservedY = sort(observedY);
+y_threshold = sortedObservedY(2);
+surf(ax, px1, px2, Y.*(Y<=y_threshold & Y>=min(observedY)), 'FaceColor', 'red', 'EdgeColor', 'black');
+scatter3(ax, observedX1, observedX2, observedY, 'black', 'filled', 'o');
+title(ax, 'linear kernel theta: 3');
+hold off;
+
+% <------------------- exponential kernel ----------------------------->
+
+ax = nexttile(2);
+rng(seed);
+precision = 120;    % now it fixed, do not modify!
+numOfTrainingPoints = 10;
+preTempX1 = linspace(-5, 5, precision);
+preTempX2 = linspace(-5, 5, precision);
+[px1, px2] = meshgrid(preTempX1, preTempX2);
+predictedX1 = reshape(px1, 1, []);       % 1 * 1600
+predictedX2 = reshape(px2, 1, []);       % 1 * 1600
+predictedX = [predictedX1; predictedX2]; % 2 * 1600
+observedX1 = rand(1, numOfTrainingPoints);  % range: (0,1)
+observedX2 = rand(1, numOfTrainingPoints);  % range: (0,1)
+observedX = [observedX1; observedX2];
+observedY = Obj2D(observedX1, observedX2);
+[predictedY, sigma, type] = GP(predictedX, observedX, observedY, 0.5, 2);
+Y = reshape(predictedY, precision, precision);
+% obj function
+% mesh(px1,px2,Obj2D(px1,px2), 'EdgeColor', 'flat', 'FaceAlpha', 0);
+hold on;
+surf(px1, px2, Y);
+surf(ax, px1, px2, Y.*(Y<=min(observedY)), 'FaceColor', 'red', 'EdgeColor', 'black');
+scatter3(ax, observedX1, observedX2, observedY, 'black', 'filled', 'o');
+title(ax, 'exponential kernel theta: 0.5');
+hold off;
+
+
+
+ax = nexttile(7);
+rng(seed);
+precision = 120;    % now it fixed, do not modify!
+numOfTrainingPoints = 10;
+preTempX1 = linspace(-5, 5, precision);
+preTempX2 = linspace(-5, 5, precision);
+[px1, px2] = meshgrid(preTempX1, preTempX2);
+predictedX1 = reshape(px1, 1, []);       % 1 * 1600
+predictedX2 = reshape(px2, 1, []);       % 1 * 1600
+predictedX = [predictedX1; predictedX2]; % 2 * 1600
+observedX1 = rand(1, numOfTrainingPoints);  % range: (0,1)
+observedX2 = rand(1, numOfTrainingPoints);  % range: (0,1)
+observedX = [observedX1; observedX2];
+observedY = Obj2D(observedX1, observedX2);
+[predictedY, sigma, type] = GP(predictedX, observedX, observedY, 1, 2);
+Y = reshape(predictedY, precision, precision);
+% obj function
+% mesh(px1,px2,Obj2D(px1,px2), 'EdgeColor', 'flat', 'FaceAlpha', 0);
+hold on;
+surf(px1, px2, Y);
+surf(ax, px1, px2, Y.*(Y<=min(observedY)), 'FaceColor', 'red', 'EdgeColor', 'black');
+scatter3(ax, observedX1, observedX2, observedY, 'black', 'filled', 'o');
+title(ax, 'exponential kernel theta: 1');
+hold off;
+
+
+
+
+ax = nexttile(12);
+rng(seed);
+precision = 120;    % now it fixed, do not modify!
+numOfTrainingPoints = 10;
+preTempX1 = linspace(-5, 5, precision);
+preTempX2 = linspace(-5, 5, precision);
+[px1, px2] = meshgrid(preTempX1, preTempX2);
+predictedX1 = reshape(px1, 1, []);       % 1 * 1600
+predictedX2 = reshape(px2, 1, []);       % 1 * 1600
+predictedX = [predictedX1; predictedX2]; % 2 * 1600
+observedX1 = rand(1, numOfTrainingPoints);  % range: (0,1)
+observedX2 = rand(1, numOfTrainingPoints);  % range: (0,1)
+observedX = [observedX1; observedX2];
+observedY = Obj2D(observedX1, observedX2);
+[predictedY, sigma, type] = GP(predictedX, observedX, observedY, 3, 2);
+Y = reshape(predictedY, precision, precision);
+% obj function
+% mesh(px1,px2,Obj2D(px1,px2), 'EdgeColor', 'flat', 'FaceAlpha', 0);
+hold on;
+surf(px1, px2, Y);
+surf(ax, px1, px2, Y.*(Y<=min(observedY)), 'FaceColor', 'red', 'EdgeColor', 'black');
+scatter3(ax, observedX1, observedX2, observedY, 'black', 'filled', 'o');
+title(ax, 'exponential kernel theta: 3');
+hold off;
+
+% <-------------------squared exponential kernel ----------------------------->
+
+ax = nexttile(3);
+rng(seed);
+precision = 120;    % now it fixed, do not modify!
+numOfTrainingPoints = 10;
+preTempX1 = linspace(-5, 5, precision);
+preTempX2 = linspace(-5, 5, precision);
+[px1, px2] = meshgrid(preTempX1, preTempX2);
+predictedX1 = reshape(px1, 1, []);       % 1 * 1600
+predictedX2 = reshape(px2, 1, []);       % 1 * 1600
+predictedX = [predictedX1; predictedX2]; % 2 * 1600
+observedX1 = rand(1, numOfTrainingPoints);  % range: (0,1)
+observedX2 = rand(1, numOfTrainingPoints);  % range: (0,1)
+observedX = [observedX1; observedX2];
+observedY = Obj2D(observedX1, observedX2);
+[predictedY, sigma, type] = GP(predictedX, observedX, observedY, 0.5, 1);
+Y = reshape(predictedY, precision, precision);
+% obj function
+% mesh(px1,px2,Obj2D(px1,px2), 'EdgeColor', 'flat', 'FaceAlpha', 0);
+hold on;
+surf(px1, px2, Y);
+surf(ax, px1, px2, Y.*(Y<=min(observedY)), 'FaceColor', 'red', 'EdgeColor', 'black');
+scatter3(ax, observedX1, observedX2, observedY, 'black', 'filled', 'o');
+title(ax, 'squared exponential kernel theta: 0.5');
+hold off;
+
+
+
+ax = nexttile(8);
+rng(seed);
+precision = 120;    % now it fixed, do not modify!
+numOfTrainingPoints = 10;
+preTempX1 = linspace(-5, 5, precision);
+preTempX2 = linspace(-5, 5, precision);
+[px1, px2] = meshgrid(preTempX1, preTempX2);
+predictedX1 = reshape(px1, 1, []);       % 1 * 1600
+predictedX2 = reshape(px2, 1, []);       % 1 * 1600
+predictedX = [predictedX1; predictedX2]; % 2 * 1600
+observedX1 = rand(1, numOfTrainingPoints);  % range: (0,1)
+observedX2 = rand(1, numOfTrainingPoints);  % range: (0,1)
+observedX = [observedX1; observedX2];
+observedY = Obj2D(observedX1, observedX2);
+[predictedY, sigma, type] = GP(predictedX, observedX, observedY, 1, 1);
+Y = reshape(predictedY, precision, precision);
+% obj function
+% mesh(px1,px2,Obj2D(px1,px2), 'EdgeColor', 'flat', 'FaceAlpha', 0);
+hold on;
+surf(px1, px2, Y);
+surf(ax, px1, px2, Y.*(Y<=min(observedY)), 'FaceColor', 'red', 'EdgeColor', 'black');
+scatter3(ax, observedX1, observedX2, observedY, 'black', 'filled', 'o');
+title(ax, 'squared exponential kernel theta: 1');
+hold off;
+
+
+
+
+ax = nexttile(13);
+rng(seed);
+precision = 120;    % now it fixed, do not modify!
+numOfTrainingPoints = 10;
+preTempX1 = linspace(-10, 10, precision);
+preTempX2 = linspace(-10, 10, precision);
+[px1, px2] = meshgrid(preTempX1, preTempX2);
+predictedX1 = reshape(px1, 1, []);       % 1 * 1600
+predictedX2 = reshape(px2, 1, []);       % 1 * 1600
+predictedX = [predictedX1; predictedX2]; % 2 * 1600
+observedX1 = rand(1, numOfTrainingPoints);  % range: (0,1)
+observedX2 = rand(1, numOfTrainingPoints);  % range: (0,1)
+observedX = [observedX1; observedX2];
+observedY = Obj2D(observedX1, observedX2);
+[predictedY, sigma, type] = GP(predictedX, observedX, observedY, 3, 1);
+Y = reshape(predictedY, precision, precision);
+% obj function
+% mesh(px1,px2,Obj2D(px1,px2), 'EdgeColor', 'flat', 'FaceAlpha', 0);
+hold on;
+surf(px1, px2, Y);
+surf(ax, px1, px2, Y.*(Y<=min(observedY)), 'FaceColor', 'red', 'EdgeColor', 'black');
+scatter3(ax, observedX1, observedX2, observedY, 'black', 'filled', 'o');
+title(ax, 'squared exponential kernel theta: 3');
+hold off;
+
+
+% <-------------------Inverse Multiquadratic kernel ----------------------------->
+
+ax = nexttile(4);
+rng(seed);
+precision = 120;    % now it fixed, do not modify!
+numOfTrainingPoints = 10;
+preTempX1 = linspace(-5, 5, precision);
+preTempX2 = linspace(-5, 5, precision);
+[px1, px2] = meshgrid(preTempX1, preTempX2);
+predictedX1 = reshape(px1, 1, []);       % 1 * 1600
+predictedX2 = reshape(px2, 1, []);       % 1 * 1600
+predictedX = [predictedX1; predictedX2]; % 2 * 1600
+observedX1 = rand(1, numOfTrainingPoints);  % range: (0,1)
+observedX2 = rand(1, numOfTrainingPoints);  % range: (0,1)
+observedX = [observedX1; observedX2];
+observedY = Obj2D(observedX1, observedX2);
+[predictedY, sigma, type] = GP(predictedX, observedX, observedY, 0.5, 4);
+Y = reshape(predictedY, precision, precision);
+% obj function
+% mesh(px1,px2,Obj2D(px1,px2), 'EdgeColor', 'flat', 'FaceAlpha', 0);
+hold on;
+surf(px1, px2, Y);
+surf(ax, px1, px2, Y.*(Y<=min(observedY)), 'FaceColor', 'red', 'EdgeColor', 'black');
+scatter3(ax, observedX1, observedX2, observedY, 'black', 'filled', 'o');
+title(ax, 'Inverse Multiquadratic kernel theta: 0.5');
+hold off;
+
+
+
+ax = nexttile(9);
+rng(seed);
+precision = 120;    % now it fixed, do not modify!
+numOfTrainingPoints = 10;
+preTempX1 = linspace(-5, 5, precision);
+preTempX2 = linspace(-5, 5, precision);
+[px1, px2] = meshgrid(preTempX1, preTempX2);
+predictedX1 = reshape(px1, 1, []);       % 1 * 1600
+predictedX2 = reshape(px2, 1, []);       % 1 * 1600
+predictedX = [predictedX1; predictedX2]; % 2 * 1600
+observedX1 = rand(1, numOfTrainingPoints);  % range: (0,1)
+observedX2 = rand(1, numOfTrainingPoints);  % range: (0,1)
+observedX = [observedX1; observedX2];
+observedY = Obj2D(observedX1, observedX2);
+[predictedY, sigma, type] = GP(predictedX, observedX, observedY, 1, 4);
+Y = reshape(predictedY, precision, precision);
+% obj function
+% mesh(px1,px2,Obj2D(px1,px2), 'EdgeColor', 'flat', 'FaceAlpha', 0);
+hold on;
+surf(px1, px2, Y);
+surf(ax, px1, px2, Y.*(Y<=min(observedY)), 'FaceColor', 'red', 'EdgeColor', 'black');
+scatter3(ax, observedX1, observedX2, observedY, 'black', 'filled', 'o');
+title(ax, 'Inverse Multiquadratic kernel theta: 1');
+hold off;
+
+
+
+
+ax = nexttile(14);
+rng(seed);
+precision = 120;    % now it fixed, do not modify!
+numOfTrainingPoints = 10;
+preTempX1 = linspace(-5, 5, precision);
+preTempX2 = linspace(-5, 5, precision);
+[px1, px2] = meshgrid(preTempX1, preTempX2);
+predictedX1 = reshape(px1, 1, []);       % 1 * 1600
+predictedX2 = reshape(px2, 1, []);       % 1 * 1600
+predictedX = [predictedX1; predictedX2]; % 2 * 1600
+observedX1 = rand(1, numOfTrainingPoints);  % range: (0,1)
+observedX2 = rand(1, numOfTrainingPoints);  % range: (0,1)
+observedX = [observedX1; observedX2];
+observedY = Obj2D(observedX1, observedX2);
+[predictedY, sigma, type] = GP(predictedX, observedX, observedY, 3, 4);
+Y = reshape(predictedY, precision, precision);
+% obj function
+% mesh(px1,px2,Obj2D(px1,px2), 'EdgeColor', 'flat', 'FaceAlpha', 0);
+hold on;
+surf(px1, px2, Y);
+surf(ax, px1, px2, Y.*(Y<=min(observedY)), 'FaceColor', 'red', 'EdgeColor', 'black');
+scatter3(ax, observedX1, observedX2, observedY, 'black', 'filled', 'o');
+title(ax, 'Inverse Multiquadratic kernel theta: 3');
+hold off;
+
+
+% <-------------------Thin plate kernel ----------------------------->
+
+
+ax = nexttile(5);
+rng(seed);
+precision = 120;    % now it fixed, do not modify!
+numOfTrainingPoints = 10;
+preTempX1 = linspace(-5, 5, precision);
+preTempX2 = linspace(-5, 5, precision);
+[px1, px2] = meshgrid(preTempX1, preTempX2);
+predictedX1 = reshape(px1, 1, []);       % 1 * 1600
+predictedX2 = reshape(px2, 1, []);       % 1 * 1600
+predictedX = [predictedX1; predictedX2]; % 2 * 1600
+observedX1 = rand(1, numOfTrainingPoints);  % range: (0,1)
+observedX2 = rand(1, numOfTrainingPoints);  % range: (0,1)
+observedX = [observedX1; observedX2];
+observedY = Obj2D(observedX1, observedX2);
+[predictedY, sigma, type] = GP(predictedX, observedX, observedY, 0.5, 3);
+Y = reshape(predictedY, precision, precision);
+% obj function
+% mesh(px1,px2,Obj2D(px1,px2), 'EdgeColor', 'flat', 'FaceAlpha', 0);
+hold on;
+surf(px1, px2, Y);
+surf(ax, px1, px2, Y.*(Y<=min(observedY)), 'FaceColor', 'red', 'EdgeColor', 'black');
+scatter3(ax, observedX1, observedX2, observedY, 'black', 'filled', 'o');
+title(ax, 'Thin plate kernel theta: 0.5');
+hold off;
+
+
+
+ax = nexttile(10);
+rng(seed);
+precision = 120;    % now it fixed, do not modify!
+numOfTrainingPoints = 10;
+preTempX1 = linspace(-5, 5, precision);
+preTempX2 = linspace(-5, 5, precision);
+[px1, px2] = meshgrid(preTempX1, preTempX2);
+predictedX1 = reshape(px1, 1, []);       % 1 * 1600
+predictedX2 = reshape(px2, 1, []);       % 1 * 1600
+predictedX = [predictedX1; predictedX2]; % 2 * 1600
+observedX1 = rand(1, numOfTrainingPoints);  % range: (0,1)
+observedX2 = rand(1, numOfTrainingPoints);  % range: (0,1)
+observedX = [observedX1; observedX2];
+observedY = Obj2D(observedX1, observedX2);
+[predictedY, sigma, type] = GP(predictedX, observedX, observedY, 1, 3);
+Y = reshape(predictedY, precision, precision);
+% obj function
+% mesh(px1,px2,Obj2D(px1,px2), 'EdgeColor', 'flat', 'FaceAlpha', 0);
+hold on;
+surf(px1, px2, Y);
+surf(ax, px1, px2, Y.*(Y<=min(observedY)), 'FaceColor', 'red', 'EdgeColor', 'black');
+scatter3(ax, observedX1, observedX2, observedY, 'black', 'filled', 'o');
+title(ax, 'Thin plate kernel theta: 1');
+hold off;
+
+
+
+
+ax = nexttile(15);
+rng(seed);
+precision = 120;    % now it fixed, do not modify!
+numOfTrainingPoints = 10;
+preTempX1 = linspace(-10, 10, precision);
+preTempX2 = linspace(-10, 10, precision);
+[px1, px2] = meshgrid(preTempX1, preTempX2);
+predictedX1 = reshape(px1, 1, []);       % 1 * 1600
+predictedX2 = reshape(px2, 1, []);       % 1 * 1600
+predictedX = [predictedX1; predictedX2]; % 2 * 1600
+observedX1 = rand(1, numOfTrainingPoints);  % range: (0,1)
+observedX2 = rand(1, numOfTrainingPoints);  % range: (0,1)
+observedX = [observedX1; observedX2];
+observedY = Obj2D(observedX1, observedX2);
+[predictedY, sigma, type] = GP(predictedX, observedX, observedY, 3, 3);
+Y = reshape(predictedY, precision, precision);
+% obj function
+% mesh(px1,px2,Obj2D(px1,px2), 'EdgeColor', 'flat', 'FaceAlpha', 0);
+hold on;
+surf(px1, px2, Y);
+surf(ax, px1, px2, Y.*(Y<=min(observedY)), 'FaceColor', 'red', 'EdgeColor', 'black');
+scatter3(ax, observedX1, observedX2, observedY, 'black', 'filled', 'o');
+title(ax, 'Thin plate kernel theta: 3');
+hold off;

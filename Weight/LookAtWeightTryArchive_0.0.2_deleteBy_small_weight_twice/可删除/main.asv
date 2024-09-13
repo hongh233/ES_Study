@@ -1,0 +1,94 @@
+
+% Calculate theta
+calcTheta = @(sigma, dimension) (8 * 1/sigma * sqrt(dimension));
+% calcTheta = @(sigma) (1 / sigma);
+
+
+% Params
+runs = 1;
+sigma = 1;
+dimension = 1;
+aSize = 40;
+archive = zeros(dimension, aSize);
+evaluated = zeros(dimension, aSize);
+theta = zeros(aSize, 1);
+d = sqrt(1 + dimension);
+
+STEPSIZE_UPDATES = [exp(-0.05 ./ d)...
+                    exp(-0.2 ./ d)...
+                    exp(-0.6 ./ d)...
+                    exp(0.8 ./ d)];
+x = randn(dimension, runs);
+
+archive(:, 1) = x;
+theta(1) = calcTheta(sigma, dimension);
+% theta(1) = calcTheta(sigma);
+fX = objFunction(archive(1));
+evaluated(:, 1) = fX;
+
+for i = 2:aSize
+   z = randn(dimension, 1);
+   y = x + sigma .* z;
+   fY = objFunction(y);
+   if fY >= fX
+       sigma = sigma .* STEPSIZE_UPDATES(2);
+   else
+       x = y;
+       fX = fY;
+       sigma = sigma .* STEPSIZE_UPDATES(4);
+   end
+   archive(:, i) = y;
+   evaluated(:, i) = fY;
+   theta(i) = calcTheta(sigma, dimension);
+end
+i = 1;
+while i < 10000
+    z = randn(dimension, 1);
+    y = x + sigma .* z;
+    fY = objFunction(y);
+    if i < aSize
+        if fY >= fX
+            sigma = sigma .* STEPSIZE_UPDATES(2);
+        else
+            x = y;
+            fX = fY;
+            sigma = sigma .* STEPSIZE_UPDATES(4);
+        end
+        archive(:, i) = y;
+        evaluated(:, i) = fY;
+        theta(i) = calcTheta(sigma, dimension);
+    else
+        feY = gp(archive, evaluated, theta, domain);
+    end
+    i = i + 1;
+end
+
+
+
+function fx = objFunction(x)
+    % fx = sum(x.^2);
+    fx = x.^2;
+end
+
+
+function feY = gp(tPoints, ePoints, theta, domain)
+    [n, m] = size(tPoints);
+    if n==1
+        d1 = repmat(tPoints, 1, m)-repelem(tPoints, 1, m);
+    else
+        d1 = vecnorm(repmat(tPoints, 1, m)-repelem(tPoints, 1, m));
+    end
+    if n==1
+        d2 = tPoints-repelem(ePoints, 1, m);
+    else
+        d2 = vecnorm(tPoints-repelem(ePoints, 1, m));
+    end
+    d1 = reshape(d1, m, m);
+    theta1 = repmat(theta, 1, size(tPoints, 2));
+    theta2 = repmat(theta, 1, size(domain, 2));
+    
+    k = exp(-(d1 ./ theta1).^2 / 2).';
+    ks = exp(-(d2 ./ theta2).^2 / 2);
+    ik = inv(k);
+    feY = ks.' * ik * ePoints.';
+end

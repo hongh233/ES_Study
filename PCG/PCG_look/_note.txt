@@ -1,0 +1,109 @@
+1. two paper:
+[1] Constrained optimization by radial basis function 	(not important)
+[2] A Stochastic Radial Basis Function Method             (first)
+
+2. two point of evolution strategy
+[1] Question of what kernel functions we should use
+[2] Linear kernel and Exponential kernel with the large theta, And one doesn't have that over and undershooting, then one would need to change the use of function because that undershooting is necessary in order to every evaluate point.
+
+And that idea of using the second smallest point, or maybe the kth smallest (k is a constant) is a possibility. The trouble is that it's easy to set up an experiment, but it may not be easy to interpret it. And it sound likely that things work out of the box, because they're ready to. Um, if you wanted to stay very close to what if you're doing over there with the linear and the exponential kernels, I've looked at it in 1D, and I've computed the weights. So what I did is I simply in 1D and I took three points. And for each point on the horizontal axis, then I determined what are the weights of those three points.(linear combination of those three)(a linear combinatino of the function value of each one of those is a linear combination of the function values of the three points of ?)(for each value of xtest, ftest is a linear combination of the three values of ftrain) That are determined by the so far if you want to compute a function value of the point, you compute the distances to each one of those three. And then you compute the weights from those. And I didn't spend any time on it at all, but I quickly looked at the wights that you compute for the linear kernel and of the weight compute for the exponential kernel. Even though for the exponential kernel in 1D, you do appear to approach to the same result. The weights look very very different and possible make mistake. But I think they are very different. 
+So you've got twoo different approaches taking to do the same point. And that the difference somewhat irritating. Haven't thought about it.
+
+
+One thing that would be any step forward would be as if one could fighre out which points launch it. WHen you compute the model value for a particular point, particular X test, what we've been doing in the paper is we always just considered 40 most recent points. And using 40 points can make a matrix yo conditioned, I guess. So the question for me, I would be: how many of those 40D actually need? Not with the goal of trying to find a better contant, but with the goal of finding algorithm that takes all this stuff all of the points and then says, these are important, these may not negligative impact. What really matter is the distance from the point that you're evaluating. If you do that, second bullet over there and you look at the weights, my impression is that for the linear kernel far away points have a significant impact at highways whereas for the exponential kernel, the weights decrease rapidly with increasing distance, and just one word to figure out that particular point has a weight in this that is below certain thresholds and that might be possible, just skip it. Fewer points you use, cheaper the process becomes. If you can figure it out without a lot of custom cost. Let's see how they show, I guess. Because that cost of inverting that matrix K, at some point becomes so dominating factor. So, that would remove the parameter the 40 exactly being able to get rid of that organize.
+
+Another paper: Bag Heri, SECORA
+The Regius algorithm has a couple of parameters that creator sets differently from prone to problems. Those are better. They try to automatically select parameters. They've re-implemented the algorithm. It might have use of Ragius code, so there mighe be a pointer to Regis code in there. But, from what I recall it, it's a different algorithm because it is constraints, the other one doesn't. If you see the reference of ragius code, then you could just download that and use that.
+
+
+
+
+
+simplex gradiant
+whether or not compute the value of 
+
+take an step
+
+simplest linear model for the objective function
+any better than linear
+length scale factor
+
+
+
+
+
+
+
+histogram(distance)
+hold on
+histogram(distanceAlpha)
+axis([-1,1,9,11])
+
+
+
+
+
+
+Jun 25
+
+isotroplican
+
+coherence matrix rotation(adaptation)
+air conditioning
+
+
+
+
+1. models are more suited to certain shapes of functions and others.
+We're looking at quadratic sphere, and the model with the squared exponential kernel works very well, we wouldn't expect much of the improvement. If we were not have a experiodic sphere, but the absolute value, and the model doesn't fit as well. Therefore the algorithm doesn't work as well. That is regretable because out of the box, the evolution strategy is a comparison. And therefore, it should be the same on everything.
+
+Function value walking? Learn a transformation applied to 
+
+
+2. multiple local minima, and t
+
+3. weight
+
+
+
+
+
+
+different length scales, look at the weights
+smaller magnitude
+
+
+
+
+archive. 
+
+Run evolutionary strategy
+dimension: 10
+generate 200 points usgin evolution strategy, fit model using different numbers of points
+
+
+
+Not just for quadratic sphere, try four function
+
+
+
+
+
+
+
+
+Local Length-scale Gaussian Process
+
+
+
+
+
+
+
+
+
+
+
+
+
+
